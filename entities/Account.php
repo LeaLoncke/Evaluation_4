@@ -69,8 +69,4 @@ class Account
         return $actualBalance;
     }
 
-    public function transfer(int $idDebit, int $idCredit, int $balance) {
-        
-    }
-
 }
