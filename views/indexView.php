@@ -51,7 +51,7 @@ include('includes/header.php');
 					<!-- Formulaire pour dépot/retrait -->
 					<h4>Dépot / Retrait</h4>
 					<form action="index.php" method="post">
-						<input type="hidden" name="id" value=" <?php echo $dataAccount->getId(); ?>"  required>
+						<input type="hidden" name="id" value="<?php echo $dataAccount->getId(); ?>"  required>
 						<label>Entrer une somme à débiter/créditer</label>
 						<input type="number" name="balance" placeholder="Ex: 250" required>
 						<input type="submit" name="payment" value="Créditer">
