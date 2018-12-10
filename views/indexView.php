@@ -15,8 +15,13 @@ include('includes/header.php');
 	<form class="newAccount" action="index.php" method="post">
 		<label>Sélectionner un type de compte</label>
 		<select class="" name="name" required>
-			<option value="" disabled>Choisissez le type de compte à ouvrir</option>
-			<?php // Listez les options possibles à choisir (compte courant, PEL, etc.) ?>
+			<option disabled>Choisissez le type de compte à ouvrir</option>
+			<?php
+			$arrayOfAccountTypes = ["PEL", "Compte Courant", "Livret A", "Compte Joint"];
+			foreach ($arrayOfAccountTypes as $arrayOfAccountType) { 
+			?> <option value="<?php echo $arrayOfAccountType; ?>"><?php echo $arrayOfAccountType; ?></option> <?php
+			}
+			?>
 		</select>
 		<input type="submit" name="new" value="Ouvrir un nouveau compte">
 	</form>
@@ -27,21 +32,26 @@ include('includes/header.php');
 
 	<!-- Pour chaque compte enregistré en base de données, il faudra générer le code ci-dessous -->
 
-	<?php // ######### DEBUT DU CODE A GENERER A CHAQUE TOUR DE BOUCLE ######### ?>
+	<?php // ######### DEBUT DU CODE A GENERER A CHAQUE TOUR DE BOUCLE ######### 
+	
+	$dataAccounts = $accountManager->getAccounts();
+	foreach ($dataAccounts as $dataAccount) {
+	
+	?>
 
 		<div class="card-container">
 
 			<div class="card">
-				<h3><strong><?php // Affichez ici le nom du compte ?></strong></h3>
+				<h3><strong><?php echo $dataAccount->getName(); ?></strong></h3>
 				<div class="card-content">
 
 
-					<p>Somme disponible : <?php // Affichez ici la somme disponible ?> €</p>
+					<p>Somme disponible : <?php echo $dataAccount->getBalance(); ?> €</p>
 
 					<!-- Formulaire pour dépot/retrait -->
 					<h4>Dépot / Retrait</h4>
 					<form action="index.php" method="post">
-						<input type="hidden" name="id" value=" <?php // Afficher ici l'id du compte ?>"  required>
+						<input type="hidden" name="id" value=" <?php echo $dataAccount->getId(); ?>"  required>
 						<label>Entrer une somme à débiter/créditer</label>
 						<input type="number" name="balance" placeholder="Ex: 250" required>
 						<input type="submit" name="payment" value="Créditer">
@@ -55,18 +65,25 @@ include('includes/header.php');
 						<h4>Transfert</h4>
 						<label>Entrer une somme à transférer</label>
 						<input type="number" name="balance" placeholder="Ex: 300"  required>
-						<input type="hidden" name="idDebit" value="<?php // Afficher ici l'id du compte à débiter?>" required>
+						<input type="hidden" name="idDebit" value="<?php echo $dataAccount->getId(); ?>" required>
 						<label for="">Sélectionner un compte pour le virement</label>
 						<select name="idPayment" required>
 							<option value="" disabled>Choisir un compte</option>
-							<?php // Lister ici les comptes sur lesquels verser l'argent ?>
+							<?php
+							$arrayOfAccountTypes = ["PEL", "Compte Courant", "Livret A", "Compte Joint"];
+							foreach ($arrayOfAccountTypes as $arrayOfAccountType) { 
+								if ($arrayOfAccountType !== $dataAccount->getName()) {
+									?> <option name="accountType"><?php echo $arrayOfAccountType; ?></option> <?php
+								}
+							}
+							?>
 						</select>
 						<input type="submit" name="transfer" value="Transférer l'argent">
 					</form>
 
 					<!-- Formulaire pour suppression -->
 			 		<form class="delete" action="index.php" method="post">
-				 		<input type="hidden" name="id" value="<?php // Afficher ici l'id du compte ?>"  required>
+				 		<input type="hidden" name="id" value="<?php echo $dataAccount->getId(); ?>"  required>
 				 		<input type="submit" name="delete" value="Supprimer le compte">
 			 		</form>
 
@@ -74,7 +91,10 @@ include('includes/header.php');
 			</div>
 		</div>
 
-	<?php // ######### FIN DU CODE A GENERER A CHAQUE TOUR DE BOUCLE ######### ?>
+	<?php // ######### FIN DU CODE A GENERER A CHAQUE TOUR DE BOUCLE ######### 
+	}
+	
+	?>
 
 	</div>
 
