@@ -17,7 +17,7 @@ include('includes/header.php');
 		<select class="" name="name" required>
 			<option disabled>Choisissez le type de compte à ouvrir</option>
 			<?php
-			$arrayOfAccountTypes = ["PEL", "Compte Courant", "Livret A", "Compte Joint"];
+			$arrayOfAccountTypes = ["Compte Courant", "Livret A", "PEL", "Compte Joint"];
 			foreach ($arrayOfAccountTypes as $arrayOfAccountType) { 
 			?> <option value="<?php echo $arrayOfAccountType; ?>"><?php echo $arrayOfAccountType; ?></option> <?php
 			}
@@ -66,14 +66,14 @@ include('includes/header.php');
 						<label>Entrer une somme à transférer</label>
 						<input type="number" name="balance" placeholder="Ex: 300"  required>
 						<input type="hidden" name="idDebit" value="<?php echo $dataAccount->getId(); ?>" required>
-						<label for="">Sélectionner un compte pour le virement</label>
+						<label>Sélectionner un compte pour le virement</label>
 						<select name="idPayment" required>
 							<option value="" disabled>Choisir un compte</option>
 							<?php
-							$arrayOfAccountTypes = ["PEL", "Compte Courant", "Livret A", "Compte Joint"];
-							foreach ($arrayOfAccountTypes as $arrayOfAccountType) { 
-								if ($arrayOfAccountType !== $dataAccount->getName()) {
-									?> <option name="accountType"><?php echo $arrayOfAccountType; ?></option> <?php
+							$dataTransferAccounts = $accountManager->getAccounts();
+							foreach ($dataTransferAccounts as $dataTransferAccounts) {
+								if ($dataTransferAccounts->getName() !== $dataAccount->getName()) {
+									?> <option value="<?php echo $dataTransferAccounts->getId(); ?>"><?php echo $dataTransferAccounts->getName(); ?></option> <?php
 								}
 							}
 							?>
