@@ -35,7 +35,35 @@ if (isset($_POST['delete'])) {
 }
 
 
+// Credit
+if (isset($_POST['payment'])) {
+    if (isset($_POST['id']) && !empty($_POST['id'])) {
 
+        $id = (int) $_POST['id'];
+        $account = $accountManager->getAccount($id);
+
+        if (isset($_POST['balance']) && !empty($_POST['balance'])) {
+            $balance = (int) $_POST['balance'];
+            $actualBalance = $account->credit($balance);
+            $accountManager->updateAccount($id, $actualBalance);
+        }
+    }
+}
+
+// Debit
+if (isset($_POST['debit'])) {
+    if (isset($_POST['id']) && !empty($_POST['id'])) {
+
+        $id = (int) $_POST['id'];
+        $account = $accountManager->getAccount($id);
+
+        if (isset($_POST['balance']) && !empty($_POST['balance'])) {
+            $balance = (int) $_POST['balance'];
+            $actualBalance = $account->debit($balance);
+            $accountManager->updateAccount($id, $actualBalance);
+        }
+    }
+}
 
 
 include "../views/indexView.php";

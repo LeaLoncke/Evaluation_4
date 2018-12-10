@@ -55,15 +55,21 @@ class Account
     }
 
     // Other functions
-    public function debit(int $accountId, int $balance) {
-        
+    public function debit(int $balance) {
+        $actualBalance = $this->getBalance();
+        $actualBalance -= $balance;
+        $this->setBalance($actualBalance);
+        return $actualBalance;
     }
 
-    public function payment(int $accountId, int $balance) {
-        
+    public function credit(int $balance) {
+        $actualBalance = $this->getBalance();
+        $actualBalance += $balance;
+        $this->setBalance($actualBalance);
+        return $actualBalance;
     }
 
-    public function transfer(int $idDebit, int $idPayment, int $balance) {
+    public function transfer(int $idDebit, int $idCredit, int $balance) {
         
     }
 

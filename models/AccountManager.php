@@ -35,12 +35,11 @@ class AccountManager
         $query = $this->getDb()->prepare("SELECT * FROM accounts WHERE id = :id");
         $query->bindValue("id", $id, PDO::PARAM_INT);
         $query->execute();
-        $data = $query->fetchAll();
+        $data = $query->fetch(PDO::FETCH_ASSOC);
         return new Account($data);
     }
 
-    public function addAccount($name) {
-        $name = (string) $name;
+    public function addAccount(string $name) {
         $query = $this->getDb()->prepare("INSERT INTO accounts (name, balance) VALUES (:name, :balance)");
         $query->bindValue("name", $name, PDO::PARAM_STR);
         $query->bindValue("balance", 80, PDO::PARAM_INT);
