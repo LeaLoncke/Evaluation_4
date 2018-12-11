@@ -26,6 +26,12 @@ include('includes/header.php');
 		<input type="submit" name="new" value="Ouvrir un nouveau compte">
 	</form>
 
+	<?php 
+		if (!empty($message)) {
+			?><p class="error-message"><?php echo $message; ?></p><?php
+		}
+	?>
+
 	<hr>
 
 	<div class="main-content flex">
@@ -45,8 +51,13 @@ include('includes/header.php');
 				<h3><strong><?php echo $dataAccount->getName(); ?></strong></h3>
 				<div class="card-content">
 
-
-					<p>Somme disponible : <?php echo $dataAccount->getBalance(); ?> €</p>
+					<?php  
+					if ($dataAccount->getBalance() <= 0) {
+						?><p class="alert">Somme disponible : <?php echo $dataAccount->getBalance(); ?> €</p><?php
+					} else {
+						?><p>Somme disponible : <?php echo $dataAccount->getBalance(); ?> €</p><?php
+					}
+					?>
 
 					<!-- Formulaire pour dépot/retrait -->
 					<h4>Dépot / Retrait</h4>
